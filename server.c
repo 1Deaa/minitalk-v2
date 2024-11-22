@@ -6,7 +6,7 @@
 /*   By: drahwanj <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 16:46:31 by drahwanj          #+#    #+#             */
-/*   Updated: 2024/11/22 19:32:46 by drahwanj         ###   ########.fr       */
+/*   Updated: 2024/11/22 20:41:32 by drahwanj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void	handler(int signo, siginfo_t *info, void *unused_info)
 	static char		c = 0;
 	static int		bit = 0;
 	static pid_t	client_pid = 0;
-	
+
 	if (info->si_pid)
 		client_pid = info->si_pid;
 	if (SIGUSR1 == signo)
@@ -30,8 +30,8 @@ static void	handler(int signo, siginfo_t *info, void *unused_info)
 		bit = 0;
 		if ('\0' == c)
 		{
-			//I will send a message to client.
 			_kill(client_pid, SIGUSR2);
+			write(1, "\n", 1);
 			c = 0;
 			return ;
 		}
@@ -44,16 +44,14 @@ static void	handler(int signo, siginfo_t *info, void *unused_info)
 int	main(int argc, char **argv)
 {
 	pid_t	pid;
-	
+
 	pid = getpid();
 	if (argc != 1)
 	{
 		write(1, "Use: ./server\n", 14);
 		return (EXIT_FAILURE);
 	}
-	//my function from utilites.c
 	printf("Server PID: %d\n", pid);
-	
 	_signal(SIGUSR1, handler, 1);
 	_signal(SIGUSR2, handler, 1);
 	while (42)
