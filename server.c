@@ -18,6 +18,7 @@ static void	handler(int signo, siginfo_t *info, void *unused_info)
 	static int		bit = 0;
 	static pid_t	client_pid = 0;
 
+	(void)unused_info;
 	if (info->si_pid)
 		client_pid = info->si_pid;
 	if (SIGUSR1 == signo)
@@ -45,6 +46,7 @@ int	main(int argc, char **argv)
 {
 	pid_t	pid;
 
+	(void)argv;
 	pid = getpid();
 	if (argc != 1)
 	{

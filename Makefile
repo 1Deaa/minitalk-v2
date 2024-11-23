@@ -1,28 +1,38 @@
-#FILES
+#FILS
 
-CLIENT	= client.c
 SERVER	= server.c
+CLIENT	= client.c
+ATOI	= ft_atoi.c
 UTIL	= utilites.c
+OBJ_server = $(SERVER:.c=.o) 
+#VARS
 
-#VARIABLES
+CC = cc
+RM = rm -rf
+CFLAGS = -Werror -Wextra -Wall
 
-RM	= rm -rf
+#COMS
 
-NAME	= server
-NAME2	= client
+all: server client
 
-CC	= cc
+bonus: server client
 
-CFLAGS	= -Wall -Werror -Wextra
+server: $(OBJ_server) ft_printf
+	$(CC) -o $@ $< -L/ftprintf -libftprintf.a
 
-all: $(NAME) $(NAME2)
+client: client ft_printf
+	$(CC) $(CFLAGS) $(CLIENT) $(ATOI) $(UTIL) -o $< -Lftprintf -lftprintf
 
-$(NAME):
-	@$(CC) $(SERVER) $(UTIL) -o server
-	@echo "Compiling Server!"
-$(NAME2):
-	@$(CC) $(CLIENT) $(UTIL) -o client
-	@echo "Compiling Client!"
+ft_printf:
+	make -C ./ftprintf
 
+clean:
+	$(RM) $(OBJECTS)
+	make -C clean  /ftprintf
 
-.PHONY: all clean re
+fclean: clean
+	$(RM) server client /ftprintf/libftprintf.a
+
+re: fclean all
+
+.PHONY: all bonus libft clean fclean re
