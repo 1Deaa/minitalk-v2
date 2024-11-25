@@ -42,14 +42,34 @@ BLINK = \e[5m
 
 all: $(NAME)
 
-$(NAME): $(SERVER_OBJ) $(CLIENT_OBJ) $(UTIL_OBJ)
-	@$(MAKE) -C ft_printf
+$(NAME): server client
+
+server: $(SERVER_OBJ) $(UTIL_OBJ) ft_printf/libftprintf.a
 	@$(CC) $(CFLAGS) $(SERVER_OBJ) $(UTIL_OBJ) ft_printf/libftprintf.a -o server
+
+client: $(CLIENT_OBJ) $(UTIL_OBJ) ft_printf/libftprintf.a
 	@$(CC) $(CFLAGS) $(CLIENT_OBJ) $(UTIL_OBJ) ft_printf/libftprintf.a -o client
 
-%.o: %.c
+ft_printf/libftprintf.a:
+	@$(MAKE) -C ft_printf
+
+$(SERVER_OBJ): $(SERVER)
+	@$(CC) $(CFLAGS) -c $(SERVER) -o $(SERVER_OBJ)
+
+$(CLIENT_OBJ): $(CLIENT)
+	@$(CC) $(CFLAGS) -c $(CLIENT) -o $(CLIENT_OBJ)
+
+$(UTIL_OBJ): $(UTIL)
+	@$(CC) $(CFLAGS) -c $(UTIL) -o $(UTIL_OBJ)
+
+$(SERVER_BON_OBJ): $(SERVER_BON)
+	@$(CC) $(CFLAGS) -c $(SERVER_BON) -o $(SERVER_BON_OBJ)
+
+$(CLIENT_BON_OBJ): $(CLIENT_BON)
+	@$(CC) $(CFLAGS) -c $(CLIENT_BON) -o $(CLIENT_BON_OBJ)
+
+$(UTIL_BON_OBJ): $(UTIL_BON)
 	@$(CC) $(CFLAGS) -c $< -o $@
-	@echo "$(WHITE)· $(YELLOW)compiling file: $(BLINK)○$(MAGENTA)"
 
 clean:
 	@$(RM) $(SERVER_OBJ)
@@ -60,17 +80,15 @@ clean:
 	@$(RM) $(UTIL_BON_OBJ)
 	@echo "$(RED)"
 	@$(MAKE) -C ft_printf clean
-	@echo "Deleted ./server"
-	@echo "Deleted ./client"
 
 fclean: clean
-	@$(RM) server
-	@$(RM) client
+	@$(RM) server client
 	@$(MAKE) -C ft_printf fclean
 
 re: fclean all
 
-bonus: fclean $(SERVER_BON_OBJ) $(CLIENT_BON_OBJ) $(UTIL_BON_OBJ)
-	@$(MAKE) -C ft_printf
+bonus: fclean $(SERVER_BON_OBJ) $(CLIENT_BON_OBJ) $(UTIL_BON_OBJ) ft_printf/libftprintf.a
 	@$(CC) $(CFLAGS) $(SERVER_BON) $(UTIL_BON) ft_printf/libftprintf.a -o server
 	@$(CC) $(CFLAGS) $(CLIENT_BON) $(UTIL_BON) ft_printf/libftprintf.a -o client
+
+.PHONY: all clean fclean re bonus
