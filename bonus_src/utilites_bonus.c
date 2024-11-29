@@ -6,7 +6,7 @@
 /*   By: drahwanj <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 17:38:26 by drahwanj          #+#    #+#             */
-/*   Updated: 2024/11/24 18:33:47 by drahwanj         ###   ########.fr       */
+/*   Updated: 2024/11/29 14:07:15 by drahwanj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,10 @@ int	ft_atoi(const char *str)
 	if (str[i] == '-' || str[i] == '+')
 	{
 		if (str[i] == '-')
-			sign *= -1;
+		{
+			write(1, "Negative PID not allowed\n", 25);
+			return (1);
+		}
 		i++;
 	}
 	while (str[i] >= '0' && str[i] <= '9')
@@ -50,7 +53,7 @@ void	_signal(int signo, void *handler, int use_info)
 {
 	struct sigaction	sa;
 
-	sa.sa_flags = 0;
+	sa = (struct sigaction){0};
 	if (use_info == 1)
 	{
 		sa.sa_sigaction = handler;
