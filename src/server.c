@@ -6,7 +6,7 @@
 /*   By: drahwanj <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 16:46:31 by drahwanj          #+#    #+#             */
-/*   Updated: 2024/11/24 17:51:00 by drahwanj         ###   ########.fr       */
+/*   Updated: 2024/11/29 13:19:56 by drahwanj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	main(int argc, char **argv)
 		write(1, "Use: ./server\n", 14);
 		return (EXIT_FAILURE);
 	}
-	printf("Server PID: %d\n", pid);
+	ft_printf("Server PID: %d\n", pid);
 	_signal(SIGUSR1, handler, 1);
 	_signal(SIGUSR2, handler, 1);
 	while (42)
